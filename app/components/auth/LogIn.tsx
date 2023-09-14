@@ -26,7 +26,7 @@ export const LogIn = () => {
     .then((resultAction) => {
         if (loginAsync.fulfilled.match(resultAction)) {
           // Login was successful, redirect to the home page
-          router.push('/home');
+          router.push('/dashboard');
         } else if (loginAsync.rejected.match(resultAction)) {
           // Login had an error, display the error message
           const errorMessage = resultAction.payload || 'An error occurred during login.';

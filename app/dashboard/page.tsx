@@ -17,11 +17,6 @@ export default function Home() {
   }
   return (
     <div className="flex flex-col">
-      <div className="text-xl">Home</div>
-      <div className="">username: {}</div>
-      <button type="button" onClick={handleLogout}>
-        Logout
-      </button>
     </div>
   );
 }

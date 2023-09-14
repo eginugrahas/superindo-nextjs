@@ -17,6 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+       <head>
+        <link
+          href="https://dev.iconly.io/public/QUzFa8coBWOJ/iconly.css"
+          rel="stylesheet"
+        />
+      </head>
       <body className={inter.className}>
         <ReduxProvider>
           {children}
