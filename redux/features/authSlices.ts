@@ -1,44 +1,84 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type InitialStateType = {
-  value: AuthStateType;
-};
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 type AuthStateType = {
   isAuth: boolean;
-  username: string;
-  id: string;
-  isAdmin: boolean;
+  user: {
+    username: string;
+    password: string;
+    id: number;
+    name: string;
+    isOperator: boolean;
+  };
 };
 
-const initialState = {
-  value: {
-    isAuth: false,
-    username: "",
-    id: "",
-    isAdmin: false,
-  } as AuthStateType,
-} as InitialStateType;
+export const loginAsync = createAsyncThunk(
+  "/api/auth",
+  async (
+    credentials: { username: string; password: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      // Check if credentials are blank
+      if (
+        credentials.username.trim() === "" ||
+        credentials.password.trim() === ""
+      ) {
+        return rejectWithValue("Username and password cannot be blank.");
+      }
 
-export const auth = createSlice({
+      const response = await fetch("/api/auth", {
+        method: "POST",
+        body: JSON.stringify({
+          username: credentials.username,
+          password: credentials.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData.message);
+      }
+
+      const user = await response.json();
+      return user;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+const auth = createSlice({
   name: "auth",
-  initialState,
+  initialState: {
+    isAuth: false,
+    user: null as object | null,
+    error: null as string | null,
+  },
   reducers: {
-    logOut: () => {
-      return initialState;
+    logOut: (state) => {
+      state.isAuth = false;
+      state.user = null;
     },
-    logIn: (state, action: PayloadAction<string>) => {
-      return {
-        value: {
-          isAuth: true,
-          username: action.payload,
-          id: "aaa0001",
-          isAdmin: false,
-        },
-      };
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginAsync.pending, (state) => {
+        state.isAuth = false;
+        state.user = null;
+        state.error = null;
+      })
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        state.isAuth = true;
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(loginAsync.rejected, (state, action) => {
+        state.isAuth = false;
+        state.user = null;
+        state.error = action.error.message || "An error occurred during login.";
+      });
   },
 });
 
-export const { logIn, logOut } = auth.actions;
+export const { logOut } = auth.actions;
 export default auth.reducer;
