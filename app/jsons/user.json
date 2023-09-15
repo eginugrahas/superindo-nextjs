@@ -1,21 +1,21 @@
 [
     {
       "id": 101,
-      "name": "Admin 01",
+      "name": "Admin 1",
       "username": "admin01",
       "password": "admin01",
       "isOperator": true
     },
     {
       "id": 102,
-      "name": "Admin 02",
+      "name": "Admin 2",
       "username": "admin02",
       "password": "admin02",
       "isOperator": true
     },
     {
       "id": 103,
-      "name": "Admin 03",
+      "name": "Admin 3",
       "username": "admin03",
       "password": "admin03",
       "isOperator": true

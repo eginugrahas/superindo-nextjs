@@ -6,6 +6,7 @@ import { loginAsync } from "@/redux/features/authSlices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import { setRole } from "@/redux/features/userRoleSlices";
 
 export const LogIn = () => {
   const [username, setUsername] = useState("");
@@ -19,16 +20,18 @@ export const LogIn = () => {
   function handleLogIn() {
     if (username.trim() === "" || password.trim() === "") {
       alert("Username and password cannot be blank");
-      return; // Don't proceed with login if inputs are blank
+      return;
     }
 
     dispatch(loginAsync(credential))
     .then((resultAction) => {
         if (loginAsync.fulfilled.match(resultAction)) {
-          // Login was successful, redirect to the home page
+          console.log(resultAction.payload)
+          let userRole = "Customer";
+          if(resultAction.payload.isOperator === true) userRole = "Operator"
+          dispatch(setRole(userRole))
           router.push('/dashboard');
         } else if (loginAsync.rejected.match(resultAction)) {
-          // Login had an error, display the error message
           const errorMessage = resultAction.payload || 'An error occurred during login.';
           alert(errorMessage);
         }

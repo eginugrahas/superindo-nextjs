@@ -23,7 +23,7 @@ export async function POST(req:any) {
   }
 
   // Username and password match, return the user
-  return new Response(JSON.stringify({ data: user }), {
+  return new Response(JSON.stringify(user), {
     status: 200,
     statusText: "OK",
   });

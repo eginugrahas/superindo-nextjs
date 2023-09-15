@@ -9,10 +9,29 @@ type AuthStateType = {
     name: string;
     isOperator: boolean;
   };
+  error: object | null;
+};
+
+type InitialStateType = {
+  value: AuthStateType;
+};
+
+const initialState: InitialStateType = {
+  value: {
+    isAuth: false,
+    user: {
+      username: "",
+      password: "",
+      id: 0,
+      name: "",
+      isOperator: false,
+    },
+    error: null,
+  },
 };
 
 export const loginAsync = createAsyncThunk(
-  "/api/auth",
+  "auth/login", // Unique action type
   async (
     credentials: { username: string; password: string },
     { rejectWithValue }
@@ -40,6 +59,7 @@ export const loginAsync = createAsyncThunk(
       }
 
       const user = await response.json();
+      console.log(user)
       return user;
     } catch (error) {
       return rejectWithValue(error);
@@ -49,23 +69,17 @@ export const loginAsync = createAsyncThunk(
 
 const auth = createSlice({
   name: "auth",
-  initialState: {
-    isAuth: false,
-    user: null as object | null,
-    error: null as string | null,
-  },
+  initialState: initialState.value,
   reducers: {
-    logOut: (state) => {
-      state.isAuth = false;
-      state.user = null;
+    logOut: () => {
+      return initialState.value;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginAsync.pending, (state) => {
         state.isAuth = false;
-        state.user = null;
-        state.error = null;
+        state.user = initialState.value.user;
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.isAuth = true;
@@ -74,8 +88,8 @@ const auth = createSlice({
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.isAuth = false;
-        state.user = null;
-        state.error = action.error.message || "An error occurred during login.";
+        state.user = initialState.value.user;
+        state.error = action.payload || "An error occured on Authentification";
       });
   },
 });
