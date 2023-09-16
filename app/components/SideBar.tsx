@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { getShortName } from "../utils/formatter";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { setMenu } from "@/redux/features/menuSlices";
+import { useRouter } from "next/navigation";
 
 type User = {
   name: string;
@@ -11,7 +15,15 @@ type SidebarProps = {
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ user }) => {
-  const [selectedMenu, setSelectedMenu] = useState("home");
+  const [selectedMenu, setSelectedMenu] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter()
+
+  function handleSelectedMenu(menu:string){
+    setSelectedMenu(menu)
+    dispatch(setMenu(menu))
+    router.push(`/dashboard/${menu}`)
+  }
 
   return (
     <div className="flex flex-col w-[200px] bg-white h-screen border-r-2 border-purple">
@@ -30,10 +42,10 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
         <ul className="">
           <li
             className={`mb-4 cursor-pointer ${
-              selectedMenu === "home" ? "text-red" : ""
+              selectedMenu === "" ? "text-red" : ""
             }`}
-            id="home"
-            onClick={() => setSelectedMenu("home")}
+            id="dashboard"
+            onClick={() => handleSelectedMenu("")}
           >
             <div className="flex gap-2 font-bold items-center cursor-pointer">
               <i className="icon-home-outline font-bold text-xl"></i>
@@ -45,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               selectedMenu === "transaction" ? "text-red" : ""
             }`}
             id="transaction"
-            onClick={() => setSelectedMenu("transaction")}
+            onClick={() => handleSelectedMenu("transaction")}
           >
             <div className="flex gap-2 font-bold items-center">
               <i className="icon-orders font-bold text-xl"></i>
@@ -55,8 +67,8 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
           <li className="" id="master_data">
             <div
               className={`cursor-pointer ${
-                selectedMenu === "master_product" ||
-                selectedMenu === "master_category"
+                selectedMenu === "masterProduct" ||
+                selectedMenu === "masterCategory"
                   ? "text-red"
                   : ""
               } flex gap-2 font-bold items-center`}
@@ -67,19 +79,19 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
             <ul className="pl-7">
               <li
                 className={`my-2 cursor-pointer ${
-                  selectedMenu === "master_product" ? "text-red" : ""
+                  selectedMenu === "masterProduct" ? "text-red" : ""
                 }`}
                 id="master_product"
-                onClick={() => setSelectedMenu("master_product")}
+                onClick={() => handleSelectedMenu("masterProduct")}
               >
                 Produk
               </li>
               <li
                 className={`my-2 cursor-pointer ${
-                  selectedMenu === "master_category" ? "text-red" : ""
+                  selectedMenu === "masterCategory" ? "text-red" : ""
                 }`}
                 id="master_category"
-                onClick={() => setSelectedMenu("master_category")}
+                onClick={() => handleSelectedMenu("masterCategory")}
               >
                 Kategori Produk
               </li>

@@ -17,10 +17,11 @@ export default function DashboardLayout({
 
   const dispatch = useDispatch<AppDispatch>();
   const user = useAppSelector((state) => state.authReducer.user);
+  const isAuth = useAppSelector((state) => state.authReducer.isAuth);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-p-white">
-      <Header user={{name: user.name}} />
+      <Header user={{name: user.name}} isAuth={isAuth}/>
       <div className="flex flex-1">
         <div className="">
           <Sidebar user={{ name: user.name, isOperator: user.isOperator }} />

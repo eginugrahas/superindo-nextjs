@@ -1,16 +1,17 @@
-import Image from "next/image";
-import { LogIn } from "./components/auth/LogIn";
+"use client"
+
+import Header from "./components/Header";
+import { useAppSelector } from "@/redux/store";
+
 
 export default function App() {
-
+  const user = useAppSelector((state) => state.authReducer.user);
+  const isAuth = useAppSelector((state) => state.authReducer.isAuth);
+  
   return (
-    <div className="grid grid-cols-2 min-h-screen">
-      <div className="flex items-center justify-center">
-        <LogIn/>
-      </div>
-      <div className="relative">
-        <Image src="/grocery.png" fill alt="grocery" objectFit="cover"></Image>
-      </div>
+    <div className="h-screen flex flex-col overflow-hidden bg-p-white">
+       <Header user={{name: user.name}} isAuth={isAuth} />
+       <div className="">Home</div>
     </div>
   );
 }

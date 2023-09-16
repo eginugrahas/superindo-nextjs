@@ -4,20 +4,14 @@ import { createSlice } from '@reduxjs/toolkit';
 const menuAccessSlice = createSlice({
   name: 'menuAccess',
   initialState: {
-    operator: {
-      dashboardAccess: true,
-      masterDataAccess: true,
-      transactionsAccess: true
-    },
-    customer: {
-      canAccessDashboard: false,
-      masterDataAccess: false,
-      transactionsAccess: true
-    },
+    menu: "home"
   },
   reducers: {
-    // Add actions to update menu permissions if necessary
+    setMenu: (state, action) => {
+      state.menu = action.payload
+    },
   },
 });
 
+export const {setMenu} = menuAccessSlice.actions
 export default menuAccessSlice.reducer;

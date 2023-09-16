@@ -23,19 +23,21 @@ export const LogIn = () => {
       return;
     }
 
-    dispatch(loginAsync(credential))
-    .then((resultAction) => {
-        if (loginAsync.fulfilled.match(resultAction)) {
-          console.log(resultAction.payload)
-          let userRole = "Customer";
-          if(resultAction.payload.isOperator === true) userRole = "Operator"
-          dispatch(setRole(userRole))
-          router.push('/dashboard');
-        } else if (loginAsync.rejected.match(resultAction)) {
-          const errorMessage = resultAction.payload || 'An error occurred during login.';
-          alert(errorMessage);
+    dispatch(loginAsync(credential)).then((resultAction) => {
+      if (loginAsync.fulfilled.match(resultAction)) {
+        let userRole = "oustomer";
+        if (resultAction.payload.isOperator === true) {
+          userRole = "operator";
+          router.push("/dashboard");
+        } else {
+          router.push("/");
         }
-      });
+      } else if (loginAsync.rejected.match(resultAction)) {
+        const errorMessage =
+          resultAction.payload || "An error occurred during login.";
+        alert(errorMessage);
+      }
+    });
   }
 
   return (

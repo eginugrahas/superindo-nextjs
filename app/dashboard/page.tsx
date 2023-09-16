@@ -1,10 +1,10 @@
 "use client";
 
+import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
-
   const [product, setProduct] = useState([
     {
       id: 1,
@@ -43,6 +43,8 @@ export default function Home() {
       code:"PDCT000002004"
     }
   ])
+
+  // const currentPage = useAppSelector((state)=>state.menuSlices.menu)
   
   return (
     <div className="flex flex-col">
@@ -101,7 +103,6 @@ export default function Home() {
              </div>
            </div>
           })}
-         
         </div>
       </div>
     </div>
