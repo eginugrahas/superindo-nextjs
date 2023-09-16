@@ -3,21 +3,31 @@
 import Header from "../components/Header";
 import Sidebar from "../components/SideBar";
 import { useAppSelector } from "@/redux/store";
-import { logOut } from "@/redux/features/authSlices";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { useRouter } from "next/navigation";
-import { getShortName } from "../utils/formatter";
+import { setToken } from "@/redux/features/authSlices";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter()
   const user = useAppSelector((state) => state.authReducer.user);
   const isAuth = useAppSelector((state) => state.authReducer.isAuth);
+  const dispatch = useDispatch<AppDispatch>();
+  
+  useEffect(()=>{
+    const token = localStorage.getItem('token')
+    if(token){
+      dispatch(setToken(token))
+    } else{
+      router.push('/')
+    }
+  },[dispatch])
+  
 
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-p-white">

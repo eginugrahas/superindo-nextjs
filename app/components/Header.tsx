@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { useAppSelector } from "@/redux/store";
-import { logOut } from "@/redux/features/authSlices";
+import { logOut, setToken } from "@/redux/features/authSlices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,8 @@ const Header: React.FC<HeaderPropsType> = ({ user, isAuth }) => {
   const router = useRouter();
   function handleLogout() {
     dispatch(logOut());
+    dispatch(setToken(null))
+    localStorage.clear()
     router.push("/");
   }
 

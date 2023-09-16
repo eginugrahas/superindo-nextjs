@@ -1,12 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { loginAsync } from "@/redux/features/authSlices";
+import { useEffect, useState } from "react";
+import { loginAsync, setToken } from "@/redux/features/authSlices";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { setRole } from "@/redux/features/userRoleSlices";
 
 export const LogIn = () => {
   const [username, setUsername] = useState("");
@@ -39,7 +38,6 @@ export const LogIn = () => {
       }
     });
   }
-
   return (
     <div className="flex flex-col items-center">
       <Image

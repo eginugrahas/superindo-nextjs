@@ -9,6 +9,7 @@ type AuthStateType = {
     name: string;
     isOperator: boolean;
   };
+  token: string | null;
   error: object | null;
 };
 
@@ -26,6 +27,7 @@ const initialState: InitialStateType = {
       name: "",
       isOperator: false,
     },
+    token: null,
     error: null,
   },
 };
@@ -58,9 +60,11 @@ export const loginAsync = createAsyncThunk(
         return rejectWithValue(errorData.message);
       }
 
-      const user = await response.json();
-      console.log(user)
-      return user;
+      const data = await response.json();
+      if (data.token.length > 0) {
+        localStorage.setItem("token", data.token);
+      }
+      return data.user;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -71,8 +75,13 @@ const auth = createSlice({
   name: "auth",
   initialState: initialState.value,
   reducers: {
-    logOut: () => {
-      return initialState.value;
+    logOut: (state) => {
+      state.isAuth = false;
+      state.user = initialState.value.user;
+      state.token = null;
+    },
+    setToken: (state, action) => {
+      state.token = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -80,19 +89,22 @@ const auth = createSlice({
       .addCase(loginAsync.pending, (state) => {
         state.isAuth = false;
         state.user = initialState.value.user;
+        state.token = null;
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.isAuth = true;
         state.user = action.payload;
+        state.token = action.payload;
         state.error = null;
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.isAuth = false;
         state.user = initialState.value.user;
+        state.token = null;
         state.error = action.payload || "An error occured on Authentification";
       });
   },
 });
 
-export const { logOut } = auth.actions;
+export const { logOut, setToken } = auth.actions;
 export default auth.reducer;

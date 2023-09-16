@@ -44,7 +44,6 @@ export default function Home() {
     }
   ])
 
-  // const currentPage = useAppSelector((state)=>state.menuSlices.menu)
   
   return (
     <div className="flex flex-col">
@@ -87,7 +86,7 @@ export default function Home() {
         </div>
         <div className="flex gap-5 mx-2">
           {product.map((p)=>{
-             return <div className="rounded-lg bg-p-white border-2 border-purple w-[190px] h-[200px] flex flex-col p-2">
+             return <div key={p.id} className="rounded-lg bg-p-white border-2 border-purple w-[190px] h-[200px] flex flex-col p-2">
              <div className="h-[60%] flex justify-center items-center">
                <Image
                  src={"/logo-superindo.png"}
