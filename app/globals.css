@@ -26,6 +26,7 @@
 
 body {
   color: var(--primary-black);
+  font-family: 'Poppins', sans-serif;
 }
 
 .remove-arrow::-webkit-inner-spin-button,

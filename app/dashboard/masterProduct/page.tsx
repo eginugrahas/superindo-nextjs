@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Switch,
-  Button,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { Switch, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -22,7 +17,7 @@ const MasterProduct = () => {
 
   const handleEdit = () => {
     setDisabled(false);
-    handleClose
+    handleClose;
   };
 
   return (
@@ -40,7 +35,7 @@ const MasterProduct = () => {
       <div className="mt-2 rounded-lg border-2 border-gray w-full min-h-[70vh] p-3">
         <table className="w-full">
           <thead>
-            <tr className="border-b-2 border-gray">
+            <tr className="border-b-2 border-gray font-bold">
               <td className="pb-2 text-center" width={"40%"}>
                 Info Produk
               </td>
@@ -54,8 +49,8 @@ const MasterProduct = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="pt-3 px-2">
+            <tr className="border-b-2 border-gray">
+              <td className="py-3 px-2">
                 <div className="flex gap-2 items-center rounded-lg w-full h-24">
                   <div className="flex justify-center items-center border-2 border-gray rounded-lg p-2">
                     <Image
@@ -68,7 +63,9 @@ const MasterProduct = () => {
                   <div className="flex-flex-col">
                     <div className="text-sm font-bold">Indomie Ayam Bawang</div>
                     <div className="text-xs text-gray">PDC: 00092923484</div>
-                    <div className="text-xs text-gray">Ditambahkan pada: 03-09-2023</div>
+                    <div className="text-xs text-gray">
+                      Ditambahkan pada: 03-09-2023
+                    </div>
                   </div>
                 </div>
               </td>
@@ -98,29 +95,42 @@ const MasterProduct = () => {
                     disabled={disabled}
                     inputProps={{ "aria-label": "controlled" }}
                   />
-                  <div>
-                    <Button
-                      id="basic-button"
-                      aria-controls={open ? "basic-menu" : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
-                      onClick={(e) => handleClick(e.currentTarget)}
-                    >
-                      <i className="icon-dots-vertical text-black"></i>
-                    </Button>
-                    <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "basic-button",
-                      }}
-                    >
-                      <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                      <MenuItem onClick={handleClose}>Hapus</MenuItem>
-                    </Menu>
-                  </div>
+                  {disabled ? (
+                    <div>
+                      <Button
+                        id="basic-button"
+                        aria-controls={open ? "basic-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={(e) => handleClick(e.currentTarget)}
+                      >
+                        <i className="icon-dots-vertical text-black"></i>
+                      </Button>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                        <MenuItem onClick={handleClose}>Hapus</MenuItem>
+                      </Menu>
+                    </div>
+                  ) : (
+                    <div className="">
+                      <Button
+                        sx={{bgcolor: "#2A186C", color: "white"}}
+                        variant="contained"
+                        className="bg-purple text-white"
+                        onClick={() => setDisabled(true)}
+                      >
+                        Simpan
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </td>
             </tr>
