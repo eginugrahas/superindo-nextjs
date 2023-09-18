@@ -1,39 +1,68 @@
 import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
 import Image from "next/image";
 import { Button, Menu, MenuItem, Switch } from "@mui/material";
+import { ProductVariantPropsType, ProductVariantType } from "../../types/types";
 
-type ProductPropsType = {
-  disabled: boolean;
-  setDisabled: (value: boolean) => void;
-  product: {
-    name: string;
-    id: number;
-    product_id: number;
-    code: string;
-    price: number;
-    qty: number;
-    active: boolean;
-    created_user: string;
-    created_date: string;
-    updated_user: string;
-    updated_date: string;
-  };
-  key: number;
-};
 
-function ProductVariant(props: ProductPropsType) {
-  const [anchorEl, setAnchorEl] = useState(null);
+function ProductVariant(props: ProductVariantPropsType) {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [isEditing, setIsEditing] = useState(false); //
+  const [editedProductVariant, setEditedProductVariant] = useState<ProductVariantType | null>(props.product);
   const open = Boolean(anchorEl);
-  const handleClick = (e: any) => {
-    setAnchorEl(e);
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setAnchorEl(e.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEdit = () => {
-    props.setDisabled(false);
-    handleClose;
+    setIsEditing(true);
+    setEditedProductVariant(props.product);
+    handleClose(); 
+  };
+
+  const handleDelete= async () => {
+    try {
+      if (editedProductVariant) {
+        await fetch(`http://localhost:3001/productsVariant/${editedProductVariant.id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editedProductVariant),
+        });
+        
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Error saving product:", error);
+    }
+  }
+
+  const handleSave = async () => {
+    try {
+      if (editedProductVariant) {
+      //  console.log(editedProductVariant);
+        await fetch(`http://localhost:3001/productsVariant/${editedProductVariant.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editedProductVariant),
+        });
+        
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Error saving product:", error);
+    }
+  };
+
+  const handleToggleActive = () => {
+    if (editedProductVariant) {
+      setEditedProductVariant({ ...editedProductVariant, active: !editedProductVariant.active });
+    }
   };
   return (
     <div className="flex gap-2 items-center py-3 pl-5">
@@ -55,22 +84,30 @@ function ProductVariant(props: ProductPropsType) {
           Lihat Barcode
         </div>
       </div>
-      <div className="">
+      <div className="ml-auto">
         <label htmlFor="price" className="text-xs font-medium pb-1">
           Harga
         </label>
         <div
           className={`flex items-center justify-center p-2 gap-2 rounded-lg ${
-            props.disabled ? "border-gray border" : "border-purple border-2"
+            !isEditing ? "border-gray border" : "border-purple border-2"
           }`}
         >
           <div className="font-medium">Rp</div>
           <input
             type="number"
             name="price"
-            value={props.product.price}
-            className="remove-arrow p-1 outline-none"
-            disabled={props.disabled}
+            value={editedProductVariant?.price}
+            className="remove-arrow p-1 outline-none w-32"
+            disabled={!isEditing}
+            onChange={(e) => {
+              if (editedProductVariant) {
+                setEditedProductVariant({
+                  ...editedProductVariant,
+                  price: e.currentTarget.valueAsNumber,
+                });
+              }
+            }}
           />
         </div>
       </div>
@@ -80,15 +117,23 @@ function ProductVariant(props: ProductPropsType) {
         </label>
         <div
           className={`border flex items-center justify-center p-2 gap-2 border-gray rounded-lg ${
-            props.disabled ? "border-gray border" : "border-purple border-2"
+            !isEditing ? "border-gray border" : "border-purple border-2"
           }`}
         >
           <input
             type="number"
             name="stock"
-            value={props.product.qty}
-            className="remove-arrow p-1 outline-none"
-            disabled={props.disabled}
+            value={editedProductVariant?.qty}
+            className="remove-arrow p-1 outline-none w-12"
+            disabled={!isEditing}
+            onChange={(e) => {
+              if (editedProductVariant) {
+                setEditedProductVariant({
+                  ...editedProductVariant,
+                  qty: e.currentTarget.valueAsNumber,
+                });
+              }
+            }}
           />
           <div className="font-medium">Pcs</div>
         </div>
@@ -101,48 +146,50 @@ function ProductVariant(props: ProductPropsType) {
               Aktif
             </label>
             <Switch
-              checked={props.product.active}
-              disabled={props.disabled}
-              inputProps={{ "aria-label": "controlled" }}
-              color="secondary"
+             checked={editedProductVariant ? editedProductVariant.active : false}
+             disabled={!isEditing}
+             onChange={handleToggleActive}
+             inputProps={{ "aria-label": "controlled" }}
+             color="secondary"
             />
           </div>
-          {props.disabled ? (
-            <div>
-              <Button
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={(e) => handleClick(e.currentTarget)}
-              >
-                <i className="icon-dots-vertical text-black"></i>
-              </Button>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-              >
-                <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Hapus</MenuItem>
-              </Menu>
-            </div>
-          ) : (
-            <div className="">
-              <Button
-                sx={{ bgcolor: "#2A186C", color: "white" }}
-                variant="contained"
-                className="bg-purple text-white"
-                onClick={() => props.setDisabled(true)}
-              >
-                Simpan
-              </Button>
-            </div>
-          )}
+          {!isEditing ? (
+              <div>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  <i className="icon-dots-vertical text-black"></i>
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                  <MenuItem onClick={handleDelete}>Hapus</MenuItem>
+                </Menu>
+              </div>
+            ) : (
+              <div className="">
+                <Button
+                  sx={{ bgcolor: "#2A186C", color: "white" }}
+                  variant="contained"
+                  className="bg-purple text-white"
+                  onClick={handleSave}
+                  size="small"
+                >
+                  Simpan
+                </Button>
+              </div>
+            )}
         </div>
       </div>
     </div>

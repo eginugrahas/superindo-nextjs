@@ -52,7 +52,7 @@
   "products": [
     {
       "id": 1,
-      "name": "Indomie",
+      "name": "Cheetos",
       "plu": "PDCT0000001",
       "product_category_id": 1,
       "active": true,
@@ -63,7 +63,7 @@
     },
     {
       "id": 2,
-      "name": "Cheetos",
+      "name": "Indomie",
       "plu": "PDCT0000002",
       "product_category_id": 1,
       "active": true,

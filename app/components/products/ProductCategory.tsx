@@ -58,7 +58,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
     handleClose;
   };
   return (
-    <div className="flex flex-col gap-2 border-2 border-purple bg-p-white p-2 rounded-lg w-full">
+    <div className="flex flex-col gap-2 border-2 border-purple bg-p-white p-2 rounded-lg w-full my-3">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <div className="font-bold">{props.category.name}</div>
@@ -126,7 +126,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
       <div className="">
         <Accordion cta="Tambah Produk ke Kategori" title="Lihat Produk">
           {productInCategory.map((product) => (
-            <div className="my-2 ml-3">
+            <div className="my-2 ml-3" key={product.id}>
               <ProductItem key={product.id} product={product} />
             </div>
           ))}

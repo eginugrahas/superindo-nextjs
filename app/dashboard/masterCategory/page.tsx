@@ -3,31 +3,35 @@
 import Accordion from "@/app/components/Accordion";
 import ProductCategory from "@/app/components/products/ProductCategory";
 import ProductItem from "@/app/components/products/ProductItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const categories = [
-  {
-    id: 1,
-    name: "Makanan",
-    active: true,
-    created_user: "OPERATOR",
-    created_date: "2023-02-01 07:00:00",
-    updated_user: "OPERATOR",
-    updated_date: "2023-02-01 07:00:00",
-  },
-  {
-    id: 2,
-    name: "Minuman",
-    active: true,
-    created_user: "OPERATOR",
-    created_date: "2023-02-01 07:00:00",
-    updated_user: "OPERATOR",
-    updated_date: "2023-02-01 07:00:00",
-  },
-];
+type CategoryType = {
+  id: number;
+  name: string;
+  active: boolean;
+  created_user: string;
+  created_date: string;
+  updated_user: string;
+  updated_date: string;
+};
 
 const MasterCategory: React.FC = () => {
   const [disabled, setDisabled] = useState(true);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:3001/productCategories");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="flex flex-col">
       <div className="font-bold">Master Data {`->`} Kategori Produk</div>
@@ -41,20 +45,19 @@ const MasterCategory: React.FC = () => {
         </div>
       </div>
       <div className="mt-2 rounded-lg border-2 border-gray bg-white w-full min-h-[70vh] p-3">
-        {categories.map((category) => {
-          return (
-            <div className="my-3">
-              <ProductCategory
-                disabled={true}
-                setDisabled={setDisabled}
-                category={category}
-                key={category.id}
-              />
-            </div>
-          );
-        })}
+        {categories
+          ? categories.map((category) => {
+              return (
+                <ProductCategory
+                  disabled={true}
+                  setDisabled={setDisabled}
+                  category={category}
+                  key={category.id}
+                />
+              );
+            })
+          : "Belum ada data kategori produk"}
       </div>
-      
     </div>
   );
 };
