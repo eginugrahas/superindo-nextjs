@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Button, Menu, MenuItem, Switch } from "@mui/material";
+import Accordion from "../Accordion";
+import ProductVariant from "./ProductVariant";
 
 type ProductPropsTyoe = {
   disabled: boolean;
@@ -17,6 +19,48 @@ type ProductPropsTyoe = {
     updated_date: string;
   };
 };
+
+const productVariants = [
+  {
+    id: 1,
+    name: "Indomie Goreng Original",
+    code: "PDCT00000020001",
+    product_id: 2,
+    qty: 1000,
+    price: 3000,
+    active: true,
+    created_user: "OPERATOR",
+    created_date: "2023-02-01 07:00:00",
+    updated_user: "OPERATOR",
+    updated_date: "2023-02-01 07:00:00",
+  },
+  {
+    id: 2,
+    name: "Indomie Ayam Bawang",
+    code: "PDCT00000020002",
+    product_id: 2,
+    qty: 500,
+    price: 2700,
+    active: true,
+    created_user: "OPERATOR",
+    created_date: "2023-02-01 07:00:00",
+    updated_user: "OPERATOR",
+    updated_date: "2023-02-01 07:00:00",
+  },
+  {
+    id: 3,
+    name: "Indomie Goreng Aceh",
+    code: "PDCT00000020003",
+    product_id: 2,
+    qty: 1000,
+    price: 3200,
+    active: true,
+    created_user: "OPERATOR",
+    created_date: "2023-02-01 07:00:00",
+    updated_user: "OPERATOR",
+    updated_date: "2023-02-01 07:00:00",
+  },
+];
 
 function Product(props: ProductPropsTyoe) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -98,12 +142,19 @@ function Product(props: ProductPropsTyoe) {
           </div>
         </div>
       </div>
-      <div className="flex gap-2 items-end cursor-pointer">
-        <div className="font-semibold text-sm">Lihat Varian Produk</div>
-        <span>
-          <i className="icon-arrow-down-submenu text-md"></i>
-        </span>
+      <div className="cursor-pointer">
+        <Accordion>
+            {productVariants.map((productVariant) => (
+                <ProductVariant
+                key={productVariant.id}
+                disabled={props.disabled}
+                setDisabled={props.setDisabled}
+                product={productVariant}
+                />
+            ))}
+        </Accordion>
       </div>
+      <div className=""></div>
     </div>
   );
 }
