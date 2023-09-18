@@ -26,7 +26,7 @@ export default function App() {
   },[dispatch])
   
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-p-white">
+    <div className="h-full flex flex-col overflow-hidden bg-p-white">
        <Header user={{name: user.name}} isAuth={isAuth} />
        <div className="">Home</div>
     </div>

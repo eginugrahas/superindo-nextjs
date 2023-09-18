@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   }
 
   return (
-    <div className="flex flex-col w-[200px] bg-white h-screen border-r-2 border-purple">
+    <div className="fixed top-[76px] left-0 w-[200px] h-screen bg-white border-r-2 border-purple">
       <div className="mt-5 mx-4 flex gap-2 items-center border-b border-b-gray pb-5">
         <button className="bg-red h-[45px] w-[45px] text-white font-bold text-lg rounded-full">
           {getShortName(user.name)}

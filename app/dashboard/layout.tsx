@@ -14,33 +14,28 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter()
+  const router = useRouter();
   const user = useAppSelector((state) => state.authReducer.user);
   const isAuth = useAppSelector((state) => state.authReducer.isAuth);
   const dispatch = useDispatch<AppDispatch>();
-  
-  useEffect(()=>{
-    const token = localStorage.getItem('token')
-    if(token){
-      dispatch(setToken(token))
-    } else{
-      router.push('/')
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(setToken(token));
+    } else {
+      router.push("/");
     }
-  },[dispatch])
-  
+  }, [dispatch]);
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-p-white">
-      <Header user={{name: user.name}} isAuth={isAuth}/>
-      <div className="flex flex-1">
-        <div className="">
-          <Sidebar user={{ name: user.name, isOperator: user.isOperator }} />
-        </div>
-        <div className="flex-1 overflow-hidden">
-          <main className="h-full overflow-y-auto bg-gray-100 py-4 px-8">
-            {children}
-          </main>
-        </div>
+    <div className="h-screen flex bg-p-white">
+      <Sidebar user={{ name: user.name, isOperator: user.isOperator }} />
+      <Header user={{ name: user.name }} isAuth={isAuth} />
+      <div className="flex-1 ml-[200px] overflow-hidden">
+        <main className="h-full overflow-y-auto bg-gray-100 pt-4 pb-[6rem] px-8 mt-[80px]">
+          {children}
+        </main>
       </div>
     </div>
   );

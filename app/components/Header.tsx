@@ -30,7 +30,7 @@ const Header: React.FC<HeaderPropsType> = ({ user, isAuth }) => {
     router.push("/login")
   }
   return (
-    <header className="bg-white py-3 px-4 flex justify-between items-center border-b-2 border-red">
+    <header className="bg-white py-3 px-4 flex justify-between items-center border-b-2 border-red fixed w-full z-10">
       <div className="">
         <Image src={"/logo-superindo.png"} alt="logo" width={50} height={50} />
       </div>
