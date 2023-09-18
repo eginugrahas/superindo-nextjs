@@ -41,8 +41,8 @@ function ProductVariant(props: ProductPropsType) {
         <Image
           src={"/logo-superindo.png"}
           alt="product"
-          width={50}
-          height={50}
+          width={65}
+          height={65}
         />
       </div>
       <div className="flex flex-col gap-1">
@@ -50,6 +50,9 @@ function ProductVariant(props: ProductPropsType) {
         <div className="text-xs text-gray">Code: {props.product.code}</div>
         <div className="text-xs text-gray">
           Ditambahkan pada: {props.product.created_date}
+        </div>
+        <div className="rounded text-[10px] bg-purple cursor-pointer font-light text-white p-1 text-center w-20">
+          Lihat Barcode
         </div>
       </div>
       <div className="">
@@ -93,12 +96,17 @@ function ProductVariant(props: ProductPropsType) {
 
       <div className="ml-auto flex flex-col gap-2">
         <div className="flex gap-3 items-center justify-center">
-          <Switch
-            checked={props.product.active}
-            disabled={props.disabled}
-            inputProps={{ "aria-label": "controlled" }}
-            color="secondary"
-          />
+          <div className="flex flex-col items-center">
+            <label htmlFor="active" className="text-xs font-medium">
+              Aktif
+            </label>
+            <Switch
+              checked={props.product.active}
+              disabled={props.disabled}
+              inputProps={{ "aria-label": "controlled" }}
+              color="secondary"
+            />
+          </div>
           {props.disabled ? (
             <div>
               <Button

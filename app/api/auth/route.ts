@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import users from '../../jsons/user.json'
+// import users from '../../jsons/user.json'
+import { getAllUsers, getUserById } from "../users/route";
 
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
@@ -7,7 +8,10 @@ var crypto = require('crypto');
 export async function POST(req:any) {
   const { username, password } = await req.json();
 
-  const user = users.find((u) => u.username === username);
+  const users = await getAllUsers();
+
+  const user = users.find((u: { username: string; }) => u.username === username);
+
 
   if (!user) {
     return new Response(JSON.stringify({ message: "User not found" }), {

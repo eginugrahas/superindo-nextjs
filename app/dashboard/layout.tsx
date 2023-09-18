@@ -33,7 +33,7 @@ export default function DashboardLayout({
       <Sidebar user={{ name: user.name, isOperator: user.isOperator }} />
       <Header user={{ name: user.name }} isAuth={isAuth} />
       <div className="flex-1 ml-[200px] overflow-hidden">
-        <main className="h-full overflow-y-auto bg-gray-100 pt-4 pb-[6rem] px-8 mt-[80px]">
+        <main className="h-full overflow-y-auto bg-gray-100 pt-4 pb-[6rem] px-8 mt-[80px]">  
           {children}
         </main>
       </div>

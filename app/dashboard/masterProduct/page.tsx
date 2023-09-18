@@ -1,10 +1,7 @@
 "use client";
 
-import { Switch, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
-import Image from "next/image";
 import Product from "@/app/components/products/Product";
-import ProductVariant from "@/app/components/products/ProductVariant";
 
 const products = [
   {
@@ -66,9 +63,9 @@ const MasterProduct = () => {
           Panduan Kelola Data Produk dapat di{" "}
           <span className="text-red cursor-pointer">pelajari disini.</span>
         </div>
-        <div className="rounded-lg p-3 w-[20%] font-semibold text-white bg-red text-center">
-          Tambah Produk
-        </div>
+          <div className="rounded-lg p-3 w-[20%] font-semibold text-white bg-red text-center">
+            Tambah Produk
+          </div>
       </div>
       <div className="mt-2 rounded-lg border-2 border-gray bg-white w-full min-h-[70vh] p-3">
         {products.map((product) => {
