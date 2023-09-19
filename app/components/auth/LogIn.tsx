@@ -77,11 +77,11 @@ export const LogIn = () => {
             Masuk
           </button>
         </div>
-        <div className="mt-2">
+        {/* <div className="mt-2">
           <div className="text-center text-xs font-semibold">
             Baru di Super Indo? <span className="text-red">Daftar disini!</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
