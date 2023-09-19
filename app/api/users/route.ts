@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001'; 
+const API_BASE_URL = process.env.NEXTAUTH_URL; 
 
 export async function getAllUsers() {
   try {
