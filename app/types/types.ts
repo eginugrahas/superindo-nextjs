@@ -21,7 +21,7 @@ export interface ProductVariantPropsType {
 export type ProductVariantType = {
   id?: number;
   name: string;
-  product_id: number;
+  product_id: number | undefined;
   code: string;
   price: number;
   qty: number;
@@ -58,7 +58,7 @@ export type TransactionType = {
   updated_date: string; 
 }
 
-export type TransactionDetailType ={
+export type TransactionDetailType = {
   id?: number;
   transaction_id: number;
   product_variant_id: number;

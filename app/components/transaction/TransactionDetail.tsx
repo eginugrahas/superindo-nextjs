@@ -6,9 +6,12 @@ import {
 } from "@/app/types/types";
 
 function TransactionDetail({ trxId }: { trxId: number | undefined }) {
-  const [transactionDetail, setTransactionDetail] = useState<
-    TransactionDetailType[]
-  >([]);
+  const [transactionDetail, setTransactionDetail] = useState
+  ({
+    qty: 0,
+    subtotal: 0,
+    created_date: "",
+  });
   const [productDetail, setProductDetail] = useState({
     name: "",
     code: "",
@@ -23,7 +26,7 @@ function TransactionDetail({ trxId }: { trxId: number | undefined }) {
           "http://localhost:3001/transactionDetails?transaction_id=" + trxId
         );
         const data = await response.json();
-        setTransactionDetail(data[0]);
+        setTransactionDetail(data);
 
         const product = await fetch(
           "http://localhost:3001/productVariants?id=" +

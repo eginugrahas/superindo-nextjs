@@ -27,7 +27,7 @@ function ModalAddVariant({
   const [addProductVariant, setAddProductVariant] =
     useState<ProductVariantType | null>({
       name: "",
-      product_id: 0,
+      product_id: productId,
       code: "",
       price: 0,
       qty: 0,
@@ -48,13 +48,13 @@ function ModalAddVariant({
       const existingProductCodes = data.map(
         (product: ProductVariantType) => product.code
       );
-      console.log(existingProductCodes)
+      console.log(existingProductCodes);
 
       // Find the highest number used in product codes
       const highestNumber = existingProductCodes.reduce(
         (highest: number, currentProductCode: string) => {
           const match = currentProductCode.match(/PDCT(\d+)/);
-        //   console.log(match)
+          //   console.log(match)
           if (match) {
             const number = parseInt(match[1], 10);
             return Math.max(highest, number);
@@ -67,7 +67,7 @@ function ModalAddVariant({
       // Increment the highest number by 1 and format it
       const nextNumber = highestNumber + 1;
       const nextCode = `PDCT0000002${String(nextNumber).padStart(4, "0")}`;
-    //   console.log(nextNumber,nextCode)
+      //   console.log(nextNumber,nextCode)
 
       return nextCode;
     } catch (error) {
@@ -92,19 +92,19 @@ function ModalAddVariant({
           });
         }
       });
-    //   console.log(addProductVariant);
-        const response = await fetch("http://localhost:3001/productVariants", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(addProductVariant),
-        });
-        if (response.ok) {
-          setOpenModal(false);
-        } else {
-          console.error("Failed to add product");
-        }
+      //   console.log(addProductVariant);
+      const response = await fetch("http://localhost:3001/productVariants", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addProductVariant),
+      });
+      if (response.ok) {
+        setOpenModal(false);
+      } else {
+        console.error("Failed to add product");
+      }
     } catch (error) {
       console.error("Error posting data:", error);
     }
