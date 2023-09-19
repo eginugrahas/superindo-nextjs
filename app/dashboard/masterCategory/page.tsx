@@ -1,23 +1,19 @@
 "use client";
 
-import Accordion from "@/app/components/Accordion";
+import ModalAddCategory from "@/app/components/modal/ModalAddCategory";
 import ProductCategory from "@/app/components/products/ProductCategory";
-import ProductItem from "@/app/components/products/ProductItem";
+import { ProductCategoryType } from "@/app/types/types";
 import { useState, useEffect } from "react";
 
-type CategoryType = {
-  id: number;
-  name: string;
-  active: boolean;
-  created_user: string;
-  created_date: string;
-  updated_user: string;
-  updated_date: string;
-};
+
 
 const MasterCategory: React.FC = () => {
-  const [disabled, setDisabled] = useState(true);
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [categories, setCategories] = useState<ProductCategoryType[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  function modalTambahKategori() {
+    setOpenModal(true)
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -29,8 +25,10 @@ const MasterCategory: React.FC = () => {
         console.error("Error fetching data:", error);
       }
     }
-    fetchData();
-  }, []);
+    const interval = setInterval(fetchData, 5000);
+
+    return () => clearInterval(interval);
+  },[]);
 
   return (
     <div className="flex flex-col">
@@ -40,7 +38,7 @@ const MasterCategory: React.FC = () => {
           Panduan Kelola Data Kategori Produk dapat di{" "}
           <span className="text-red cursor-pointer">pelajari disini.</span>
         </div>
-        <div className="rounded-lg p-3 w-[20%] text-sm font-semibold text-white bg-red text-center">
+        <div className="rounded-lg p-3 w-[20%] text-sm font-semibold text-white bg-red text-center cursor-pointer" onClick={modalTambahKategori}>
           Tambah Kategori Produk
         </div>
       </div>
@@ -49,8 +47,6 @@ const MasterCategory: React.FC = () => {
           ? categories.map((category) => {
               return (
                 <ProductCategory
-                  disabled={true}
-                  setDisabled={setDisabled}
                   category={category}
                   key={category.id}
                 />
@@ -58,6 +54,7 @@ const MasterCategory: React.FC = () => {
             })
           : "Belum ada data kategori produk"}
       </div>
+      <ModalAddCategory openModal={openModal} setOpenModal={setOpenModal}/>
     </div>
   );
 };

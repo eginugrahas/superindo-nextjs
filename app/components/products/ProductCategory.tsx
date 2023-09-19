@@ -1,62 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Menu, MenuItem, Switch } from "@mui/material";
 import Accordion from "../Accordion";
 import ProductItem from "./ProductItem";
-
-type ProductCategoryPropsType = {
-  disabled: boolean;
-  setDisabled: (value: boolean) => void;
-  category: {
-    id: number;
-    name: string;
-    active: boolean;
-    created_user: string;
-    created_date: string;
-    updated_user: string;
-    updated_date: string;
-  };
-  key: number;
-};
-
-const productInCategory = [
-  {
-    id: 1,
-    name: "Indomie",
-    plu: "PDCT0000001",
-    product_category_id: 1,
-    active: true,
-    created_user: "OPERATOR",
-    created_date: "2023-02-01 07:00:00",
-    updated_user: "OPERATOR",
-    updated_date: "2023-02-01 07:00:00",
-  },
-  {
-    id: 2,
-    name: "Cheetos",
-    plu: "PDCT0000002",
-    product_category_id: 1,
-    active: true,
-    created_user: "OPERATOR",
-    created_date: "2023-02-01 07:00:00",
-    updated_user: "OPERATOR",
-    updated_date: "2023-02-01 07:00:00",
-  },
-];
+import {
+  ProductCategoryPropsType,
+  ProductCategoryType,
+  ProductType,
+} from "@/app/types/types";
 
 function ProductCategory(props: ProductCategoryPropsType) {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [productInCategory, setProductInCategory] = useState<ProductType[]>([]);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedProductCategory, setEditedProductCategory] =
+    useState<ProductCategoryType | null>(props.category);
   const open = Boolean(anchorEl);
-  const handleClick = (e: any) => {
-    setAnchorEl(e);
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setAnchorEl(e.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEdit = () => {
-    props.setDisabled(false);
-    handleClose;
+    setIsEditing(true);
+    setEditedProductCategory(props.category);
+    handleClose();
   };
+
+  const handleDelete = async () => {
+    try {
+      if (editedProductCategory) {
+        await fetch(
+          `http://localhost:3001/productCategory/${editedProductCategory.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(editedProductCategory),
+          }
+        );
+
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Error saving product:", error);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      if (editedProductCategory) {
+        await fetch(
+          `http://localhost:3001/productCategories/${editedProductCategory.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(editedProductCategory),
+          }
+        );
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Error saving product:", error);
+    }
+  };
+
+  const handleToggleActive = () => {
+    if (editedProductCategory) {
+      setEditedProductCategory({
+        ...editedProductCategory,
+        active: !editedProductCategory.active,
+      });
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/products?product_category_id=${props.category.id}`
+        );
+        const data = await response.json();
+        setProductInCategory(data);
+        // console.log(data)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="flex flex-col gap-2 border-2 border-purple bg-p-white p-2 rounded-lg w-full my-3">
       <div className="flex items-center justify-between">
@@ -69,7 +106,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
         </div>
         <div className="">
           <div className="font-semibold text-xs">Jumlah Produk</div>
-          <div className="text-lg font-bold text-center">100</div>
+          <div className="text-lg font-bold text-center">{productInCategory.length}</div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex gap-3 items-center justify-center">
@@ -78,20 +115,23 @@ function ProductCategory(props: ProductCategoryPropsType) {
                 Aktif
               </label>
               <Switch
-                checked={props.category.active}
-                disabled={props.disabled}
+                checked={
+                  editedProductCategory ? editedProductCategory.active : false
+                }
+                disabled={!isEditing}
+                onChange={handleToggleActive}
                 inputProps={{ "aria-label": "controlled" }}
                 color="secondary"
               />
             </div>
-            {props.disabled ? (
+            {!isEditing ? (
               <div>
                 <Button
                   id="basic-button"
                   aria-controls={open ? "basic-menu" : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
-                  onClick={(e) => handleClick(e.currentTarget)}
+                  onClick={handleClick}
                 >
                   <i className="icon-dots-vertical text-black"></i>
                 </Button>
@@ -105,7 +145,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
                   }}
                 >
                   <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                  <MenuItem onClick={handleClose}>Hapus</MenuItem>
+                  <MenuItem onClick={handleDelete}>Hapus</MenuItem>
                 </Menu>
               </div>
             ) : (
@@ -114,7 +154,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
                   sx={{ bgcolor: "#2A186C", color: "white" }}
                   variant="contained"
                   className="bg-purple text-white"
-                  onClick={() => props.setDisabled(true)}
+                  onClick={handleSave}
                 >
                   Simpan
                 </Button>

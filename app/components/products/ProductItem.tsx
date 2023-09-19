@@ -1,20 +1,9 @@
 import React from "react";
 import Image from "next/image";
+import { ProductPropsType } from "@/app/types/types";
 
-type ProductItemPropsType = {
-  product: {
-    id: number;
-    name: string;
-    plu: string;
-    product_category_id: number;
-    active: boolean;
-    created_date: string;
-    updated_date: string;
-    image?: string;
-  };
-};
 
-function ProductItem(props: ProductItemPropsType) {
+function ProductItem(props: ProductPropsType) {
   return (
     <div className="flex item-center gap-2">
       <div className="flex justify-center items-center border-2 border-gray rounded-lg p-1">

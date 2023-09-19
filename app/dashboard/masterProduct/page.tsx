@@ -3,9 +3,15 @@
 import { useState, useEffect } from "react";
 import Product from "@/app/components/products/Product";
 import { ProductType } from "@/app/types/types";
+import ModalAddProduct from "@/app/components/modal/ModalAddProduct";
 
 const MasterProduct = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  function modalTambahProduk() {
+    setOpenModal(true);
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -17,7 +23,9 @@ const MasterProduct = () => {
         console.error("Error fetching data:", error);
       }
     }
-    fetchData();
+    const interval = setInterval(fetchData, 5000); 
+
+    return () => clearInterval(interval);
   }, [])
   
 
@@ -29,7 +37,7 @@ const MasterProduct = () => {
           Panduan Kelola Data Produk dapat di{" "}
           <span className="text-red cursor-pointer">pelajari disini.</span>
         </div>
-        <div className="rounded-lg p-3 w-[20%] font-semibold text-white bg-red text-center">
+        <div className="rounded-lg cursor-pointer p-3 w-[20%] font-semibold text-white bg-red text-center" onClick={modalTambahProduk}>
           Tambah Produk
         </div>
       </div>
@@ -43,6 +51,7 @@ const MasterProduct = () => {
           );
         })) : "Belum ada data produk"}
       </div>
+      <ModalAddProduct setOpenModal={setOpenModal} openModal={openModal} />
     </div>
   );
 };

@@ -28,9 +28,6 @@ const Accordion: React.FC<AccordionProps> = ({ title, cta, children }) => {
             ></i>
           </span>
         </div>
-        <div className="rounded cursor-pointer p-2 text-xs font-medium text-white bg-purple text-center ml-auto">
-          {cta}
-        </div>
       </div>
       {isOpen && <div className="">{children}</div>}
     </div>

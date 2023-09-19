@@ -4,7 +4,12 @@ import { Button, Menu, MenuItem, Switch } from "@mui/material";
 import Accordion from "../Accordion";
 import ProductVariant from "./ProductVariant";
 import ProductItem from "./ProductItem";
-import { ProductType, ProductVariantType, ProductPropsType } from "../../types/types";
+import {
+  ProductType,
+  ProductVariantType,
+  ProductPropsType,
+} from "../../types/types";
+import ModalAddVariant from "../modal/ModalAddVariant";
 
 function Product(props: ProductPropsType) {
   const [productVariants, setProductVariants] = useState<ProductVariantType[]>(
@@ -12,8 +17,15 @@ function Product(props: ProductPropsType) {
   );
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isEditing, setIsEditing] = useState(false); //
-  const [editedProduct, setEditedProduct] = useState<ProductType | null>(props.product);
+  const [editedProduct, setEditedProduct] = useState<ProductType | null>(
+    props.product
+  );
   const open = Boolean(anchorEl);
+  const [openModal, setOpenModal] = useState(false);
+  function modalTambahVariantProduk() {
+    console.log("open modal")
+    setOpenModal(true);
+  }
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(e.currentTarget);
   };
@@ -24,10 +36,10 @@ function Product(props: ProductPropsType) {
   const handleEdit = () => {
     setIsEditing(true);
     setEditedProduct(props.product);
-    handleClose(); 
+    handleClose();
   };
 
-  const handleDelete= async () => {
+  const handleDelete = async () => {
     try {
       if (editedProduct) {
         await fetch(`http://localhost:3001/products/${editedProduct.id}`, {
@@ -37,18 +49,17 @@ function Product(props: ProductPropsType) {
           },
           body: JSON.stringify(editedProduct),
         });
-        
+
         setIsEditing(false);
       }
     } catch (error) {
       console.error("Error saving product:", error);
     }
-  }
+  };
 
   const handleSave = async () => {
     try {
       if (editedProduct) {
-       
         await fetch(`http://localhost:3001/products/${editedProduct.id}`, {
           method: "PUT",
           headers: {
@@ -56,7 +67,7 @@ function Product(props: ProductPropsType) {
           },
           body: JSON.stringify(editedProduct),
         });
-        
+
         setIsEditing(false);
       }
     } catch (error) {
@@ -83,7 +94,9 @@ function Product(props: ProductPropsType) {
         console.error("Error fetching data:", error);
       }
     }
-    fetchData();
+    const interval = setInterval(fetchData, 5000);
+
+    return () => clearInterval(interval);
   }, []);
   return (
     <div className="flex flex-col gap-2 border-2 border-purple bg-p-white p-2 rounded-lg w-full my-3">
@@ -144,6 +157,9 @@ function Product(props: ProductPropsType) {
       </div>
       <div className="">
         <Accordion cta="Tambah Varian Produk" title="Lihat Varian Produk">
+          <div className="rounded cursor-pointer p-2 text-xs font-medium text-white bg-purple text-center w-40" onClick={modalTambahVariantProduk}>
+            Tambah Varian Produk
+          </div>
           {productVariants.length > 0 ? (
             productVariants.map((productVariant) => (
               <ProductVariant
@@ -158,6 +174,7 @@ function Product(props: ProductPropsType) {
           )}
         </Accordion>
       </div>
+      <ModalAddVariant productId={props.product.id} openModal={openModal} setOpenModal={setOpenModal}/>
     </div>
   );
 }

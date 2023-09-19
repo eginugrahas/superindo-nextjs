@@ -2,6 +2,7 @@ import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
 import Image from "next/image";
 import { Button, Menu, MenuItem, Switch } from "@mui/material";
 import { ProductVariantPropsType, ProductVariantType } from "../../types/types";
+import ModalBarcode from "../modal/ModalBarcode";
 
 
 function ProductVariant(props: ProductVariantPropsType) {
@@ -9,6 +10,8 @@ function ProductVariant(props: ProductVariantPropsType) {
   const [isEditing, setIsEditing] = useState(false); //
   const [editedProductVariant, setEditedProductVariant] = useState<ProductVariantType | null>(props.product);
   const open = Boolean(anchorEl);
+  const [openModal, setOpenModal] = useState(false);
+  const [productCode, setProductCode] = useState("");
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(e.currentTarget);
   };
@@ -44,7 +47,7 @@ function ProductVariant(props: ProductVariantPropsType) {
     try {
       if (editedProductVariant) {
       //  console.log(editedProductVariant);
-        await fetch(`http://localhost:3001/productsVariant/${editedProductVariant.id}`, {
+        await fetch(`http://localhost:3001/productVariants/${editedProductVariant.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -64,6 +67,11 @@ function ProductVariant(props: ProductVariantPropsType) {
       setEditedProductVariant({ ...editedProductVariant, active: !editedProductVariant.active });
     }
   };
+
+  function modalBarcode(code: string){
+    setOpenModal(true);
+    setProductCode(code)
+  }
   return (
     <div className="flex gap-2 items-center py-3 pl-5">
       <div className="flex justify-center items-center border-2 border-gray rounded-lg p-2">
@@ -80,7 +88,8 @@ function ProductVariant(props: ProductVariantPropsType) {
         <div className="text-xs text-gray">
           Ditambahkan pada: {props.product.created_date}
         </div>
-        <div className="rounded text-[10px] bg-purple cursor-pointer font-light text-white p-1 text-center w-20">
+        <div className="rounded text-[10px] bg-purple cursor-pointer font-light text-white p-1 text-center w-20"
+        onClick={()=>modalBarcode(props.product.code)}>
           Lihat Barcode
         </div>
       </div>
@@ -192,6 +201,7 @@ function ProductVariant(props: ProductVariantPropsType) {
             )}
         </div>
       </div>
+      <ModalBarcode setOpenModal={setOpenModal} openModal={openModal} productCode={productCode}/>
     </div>
   );
 }
