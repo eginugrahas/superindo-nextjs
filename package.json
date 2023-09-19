@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "json-server": "node server.js",
+    "build": "next build && npm run json-server",
     "start": "next start",
     "lint": "next lint"
   },

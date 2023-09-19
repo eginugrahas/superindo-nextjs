@@ -82,7 +82,6 @@ function ModalAddVariant({
         if (addProductVariant) {
           setAddProductVariant({
             ...addProductVariant,
-            product_id: productId,
             code: nextCode,
             active: true,
             created_user: "OPERATOR",
