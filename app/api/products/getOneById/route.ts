@@ -3,7 +3,7 @@ import connect from "@/mongo";
 import { ObjectId } from "mongodb";
 import { ProductType } from "@/app/types/types";
 
-export async function GET(req: any, res: NextApiResponse) {
+export async function GET(req: any) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -27,60 +27,71 @@ export async function GET(req: any, res: NextApiResponse) {
   }
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: any) {
   try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
     const db = await connect();
     if (!db) {
       throw new Error("Failed to connect to database");
     }
-    const collection = db.collection<ProductType>("products");
-    const product = await collection.insertOne(req.body);
-    res.status(201).json(product);
+    const collection = db.collection("products");
+    const product = await collection.insertOne({
+      id: Number(id),
+    });
+    return new Response(JSON.stringify(product), { status: 201 });
   } catch (error) {
     console.error("Error creating product:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return new Response(JSON.stringify({ message: "Internal server error" }));
   }
 }
 
-export async function PUT(req: NextApiRequest, res: NextApiResponse) {
+export async function PUT(req: any) {
   try {
     const db = await connect();
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    const body = await req.json();
     if (!db) {
       throw new Error("Failed to connect to database");
     }
-    const collection = db.collection<ProductType>("products");
-    const product = await collection.findOneAndUpdate(
-      { _id: new ObjectId(req.query.id as string) },
-      { $set: req.body }
+    const collection = db.collection("products");
+    const product = await collection.updateOne(
+      {
+        id: Number(id),
+      },
+      { $set: body }
     );
     if (!product) {
-      res.status(404).json({ message: "Product not found" });
+      return new Response(JSON.stringify({ message: "Product not found" }));
     } else {
-      res.status(200).json(product);
+      return new Response(JSON.stringify(product), { status: 200 });
     }
   } catch (error) {
     console.error("Error updating product:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return new Response(JSON.stringify({ message: "Internal server error" }));
   }
 }
 
-export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+export async function DELETE(req: any) {
   try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
     const db = await connect();
     if (!db) {
       throw new Error("Failed to connect to database");
     }
     const collection = db.collection<ProductType>("products");
-    const product = await collection.findOneAndDelete({
-      _id: new ObjectId(req.query.id as string),
+    const product = await collection.deleteOne({
+      id: Number(id),
     });
     if (!product) {
-      res.status(404).json({ message: "Product not found" });
+      return new Response(JSON.stringify({ message: "Product not found" }));
     } else {
-      res.status(200).json(product);
+      return new Response(JSON.stringify(product), { status: 200 });
     }
   } catch (error) {
     console.error("Error deleting product:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return new Response(JSON.stringify({ message: "Internal server error" }));
   }
 }
