@@ -35,7 +35,7 @@ export default function App() {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    }
+    };
     fetchData();
   }, [dispatch]);
 
@@ -44,9 +44,11 @@ export default function App() {
       <Header user={{ name: user.name }} isAuth={isAuth} />
       <div className="mt-[80px]">
         <div className="flex h-full items-center justify-between min-h-[400px] m-3 p-3 border-2 rounded border-purple bg-p-white">
-          {products.map((product) => {
-            return <ProductShow product={product} key={product.id} />;
-          })}
+          {products
+            ? products.map((product) => {
+                return <ProductShow product={product} key={product.id} />;
+              })
+            : "Belum ada produk"}
         </div>
       </div>
     </div>
