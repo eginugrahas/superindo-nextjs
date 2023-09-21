@@ -16,7 +16,6 @@ export async function GET(req: any, res: NextApiResponse) {
     const product = await collection.findOne({
       id: Number(id),
     });
-    console.log(product);
     if (!product) {
       return new Response(JSON.stringify({ message: "Product not found" }));
     } else {
