@@ -9,9 +9,9 @@ export async function POST(req:any) {
   const { username, password } = await req.json();
 
   const users = await getAllUsers();
+  // console.log(users)
 
-  const user = users.find((u: { username: string; }) => u.username === username);
-
+  const user = await users.find((u: any) => u.username === username);
 
   if (!user) {
     return new Response(JSON.stringify({ message: "User not found" }), {
@@ -21,7 +21,7 @@ export async function POST(req:any) {
   }
 
   if (user.password !== password) {
-    return new Response(JSON.stringify({ message: "Password not match" }), {
+    return new Response(JSON.stringify({ message: "Incorrect password" }), {
       status: 405,
       statusText: "Error",
     });

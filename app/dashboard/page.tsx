@@ -34,20 +34,18 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const productResponse = await fetch(
-          "http://localhost:3001/productVariants"
-        );
+        const productResponse = await fetch("/api/variants");
         const productData = await productResponse.json();
         setProduct(productData);
 
-        const categoryResponse = await fetch(
-          "http://localhost:3001/productCategories"
-        );
+        const getProductId = await fetch("/api/products/getOneById?id=1");
+        const product = await getProductId.json();
+        console.log(product)
+
+        const categoryResponse = await fetch("/api/categories");
         const categoryData = await categoryResponse.json();
 
-        const transactionResponse = await fetch(
-          "http://localhost:3001/transactions"
-        );
+        const transactionResponse = await fetch("/api/transactions");
         const transactionData = await transactionResponse.json();
 
         setSummary((prevSummary) => ({

@@ -28,7 +28,7 @@ export default function App() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/productVariants");
+        const response = await fetch("/api/variants");
         const data = await response.json();
         setProducts(data);
         // console.log(data);

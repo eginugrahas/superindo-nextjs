@@ -43,17 +43,13 @@ function ModalAddProduct({
   );
   async function fetchExistingProductCodes() {
     try {
-      const response = await fetch("http://localhost:3001/products");
+      const response = await fetch("/api/products");
       const data = await response.json();
       const existingProductCodes = data.map(
         (product: ProductType) => product.plu
       );
-      // console.log(existingProductCodes);
-
-      // Find the highest number used in product codes
       const highestNumber = existingProductCodes.reduce(
         (highest: number, currentProductCode: string) => {
-          // Specify the type for highest
           const match = currentProductCode.match(/PDCT(\d+)/);
           if (match) {
             const number = parseInt(match[1], 10);
@@ -68,19 +64,41 @@ function ModalAddProduct({
       return nextPlu;
     } catch (error) {
       console.error("Error fetching product codes:", error);
-      return ""; // You can return an empty string or handle the error case as needed.
+      return "";
     }
   }
+  async function fetchExistingId() {
+    try {
+      const response = await fetch("/api/products");
+      const products = await response.json();
+      const highestNumber = products.reduce((highest: number, product: any) => {
+        const number = parseInt(product.id, 10);
+        if (!isNaN(number)) {
+          return Math.max(highest, number);
+        }
+        return highest;
+      }, 0);
+      const nextId = highestNumber + 1;
+
+      return nextId;
+    } catch (error) {
+      console.error("Error fetching product codes:", error);
+      return "";
+    }
+  }
+
   function handleClose() {
     setOpenModal(false);
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
+      const nextId = await fetchExistingId();
       await fetchExistingProductCodes().then((nextPlu) => {
         setAddProduct({
           name: productName,
           plu: nextPlu,
+          id: nextId,
           product_category_id: selectedCategory,
           active: true,
           created_user: "OPERATOR",
@@ -89,7 +107,7 @@ function ModalAddProduct({
           updated_date: new Date().toISOString(),
         });
       });
-      const response = await fetch("http://localhost:3001/products", {
+      const response = await fetch("api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -109,9 +127,7 @@ function ModalAddProduct({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3001/productCategories?active=true"
-        );
+        const response = await fetch("api/categories");
         const data = await response.json();
         // console.log(data);
         setProductCategory(data);

@@ -46,7 +46,7 @@ function ModalAddCategory({
     }
     console.log(addCategory);
     try {
-      const response = await fetch("http://localhost:3001/productCategories", {
+      const response = await fetch("api/categories", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
