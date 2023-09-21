@@ -40,7 +40,7 @@ export default function Home() {
 
         const getProductId = await fetch("/api/products/getOneById?id=1");
         const product = await getProductId.json();
-        console.log(product)
+        // console.log(product)
 
         const categoryResponse = await fetch("/api/categories");
         const categoryData = await categoryResponse.json();

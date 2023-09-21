@@ -21,11 +21,13 @@ export async function GET(req:any) {
 export async function POST(req:any) {
   try { 
     const db = await connect();
+    const body = await req.json();
+    console.log(body)
     if (!db) {
       throw new Error("Failed to connect to database");
     }
     const collection = db.collection<ProductType>("products");
-    const category = await collection.insertOne(req.body);
+    const category = await collection.insertOne(body);
     return new Response(JSON.stringify(category), { status: 201 });
   } catch (error) {
     console.error("Error creating product:", error);

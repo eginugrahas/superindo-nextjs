@@ -40,9 +40,10 @@ function Product(props: ProductPropsType) {
   };
 
   const handleDelete = async () => {
+    console.log(editedProduct)
     try {
       if (editedProduct) {
-        await fetch(`http://localhost:3001/products/${editedProduct.id}`, {
+        await fetch(`/api/products/getOneById?id=${editedProduct.id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -60,7 +61,7 @@ function Product(props: ProductPropsType) {
   const handleSave = async () => {
     try {
       if (editedProduct) {
-        await fetch(`http://localhost:3001/products/${editedProduct.id}`, {
+        await fetch(`/api/products/getOneById?id=${editedProduct.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

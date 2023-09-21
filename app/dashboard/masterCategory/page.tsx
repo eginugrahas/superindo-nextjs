@@ -18,7 +18,7 @@ const MasterCategory: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("http://localhost:3001/productCategories");
+        const response = await fetch("/api/categories");
         const data = await response.json();
         setCategories(data);
       } catch (error) {

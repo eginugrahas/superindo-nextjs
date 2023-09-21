@@ -94,25 +94,25 @@ function ModalAddProduct({
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       const nextId = await fetchExistingId();
-      await fetchExistingProductCodes().then((nextPlu) => {
-        setAddProduct({
-          name: productName,
-          plu: nextPlu,
-          id: nextId,
-          product_category_id: selectedCategory,
-          active: true,
-          created_user: "OPERATOR",
-          updated_user: "OPERATOR",
-          created_date: new Date().toISOString(),
-          updated_date: new Date().toISOString(),
-        });
-      });
-      const response = await fetch("api/products", {
+      const nextPlu = await fetchExistingProductCodes();
+      const updatedProduct = {
+        name: productName,
+        plu: nextPlu,
+        id: nextId,
+        product_category_id: selectedCategory,
+        active: true,
+        created_user: "OPERATOR",
+        updated_user: "OPERATOR",
+        created_date: new Date().toISOString(),
+        updated_date: new Date().toISOString(),
+      }
+      // console.log(updatedProduct);
+      const response = await fetch("/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(addProduct),
+        body: JSON.stringify(updatedProduct),
       });
       if (response.ok) {
         setOpenModal(false);
@@ -127,9 +127,9 @@ function ModalAddProduct({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("api/categories");
+        const response = await fetch("/api/categories");
         const data = await response.json();
-        // console.log(data);
+        console.log(data);
         setProductCategory(data);
       } catch (error) {
         console.error("Error fetching data:", error);

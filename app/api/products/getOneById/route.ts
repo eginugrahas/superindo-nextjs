@@ -52,6 +52,7 @@ export async function PUT(req: any) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     const body = await req.json();
+    console.log(body)
     if (!db) {
       throw new Error("Failed to connect to database");
     }
@@ -77,6 +78,7 @@ export async function DELETE(req: any) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
+    // console.log(id)
     const db = await connect();
     if (!db) {
       throw new Error("Failed to connect to database");

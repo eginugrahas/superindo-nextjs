@@ -16,7 +16,7 @@ const MasterProduct = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("http://localhost:3001/products");
+        const response = await fetch("/api/products");
         const data = await response.json();
         setProducts(data);
       } catch (error) {
