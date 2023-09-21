@@ -3,7 +3,7 @@ import connect from "@/mongo";
 import { ObjectId } from "mongodb";
 import { ProductType } from "@/app/types/types";
 
-export async function GET(res: NextApiResponse) {
+export async function GET(req:any) {
   try {
     const db = await connect();
     if (!db) {
@@ -18,7 +18,7 @@ export async function GET(res: NextApiResponse) {
   }
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req:any) {
   try { 
     const db = await connect();
     if (!db) {
@@ -29,11 +29,11 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     return new Response(JSON.stringify(category), { status: 201 });
   } catch (error) {
     console.error("Error creating product:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return new Response(JSON.stringify({ message: "Internal server error" }));
   }
 }
 
-export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+export async function DELETE(req:any) {
   try {
     const db = await connect();
     if (!db) {
@@ -50,6 +50,6 @@ export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
     }
   } catch (error) {
     console.error("Error deleting product:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return new Response(JSON.stringify({ message: "Internal server error" }));
   }
 }

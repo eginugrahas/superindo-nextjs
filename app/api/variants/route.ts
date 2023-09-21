@@ -3,7 +3,7 @@ import connect from "@/mongo";
 import { ObjectId } from "mongodb";
 import { ProductVariantType } from "@/app/types/types";
 
-export async function GET(res: NextApiResponse) {
+export async function GET(req:any) {
   try {
     const db = await connect();
     if (!db) {
