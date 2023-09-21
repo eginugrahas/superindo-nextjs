@@ -1,8 +1,11 @@
+"use client";
+
 import { ReduxProvider } from "@/redux/provider";
 import { persistor } from "../redux/store";
-// import { PersistGate } from "redux-persist/integration/react";
+import { PersistGate } from "redux-persist/integration/react";
 import "./globals.css";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -33,7 +36,11 @@ export default function RootLayout({
         ></link>
       </head>
       <body>
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            {children}
+          </PersistGate>
+        </ReduxProvider>
       </body>
     </html>
   );
