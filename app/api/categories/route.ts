@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import connect from "@/mongo";
 import { ProductCategoryType } from "@/app/types/types";
 
-export async function GET(res: NextApiResponse) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
   try {
     const db = await connect();
     if (!db) {
