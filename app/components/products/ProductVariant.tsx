@@ -28,7 +28,7 @@ function ProductVariant(props: ProductVariantPropsType) {
   const handleDelete= async () => {
     try {
       if (editedProductVariant) {
-        await fetch(`http://localhost:3001/productsVariant/${editedProductVariant.id}`, {
+        await fetch(`/api/variants/getOneById?id=${editedProductVariant.id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function ProductVariant(props: ProductVariantPropsType) {
     try {
       if (editedProductVariant) {
       //  console.log(editedProductVariant);
-        await fetch(`http://localhost:3001/productVariants/${editedProductVariant.id}`, {
+        await fetch(`/api/variants/getOneById?id=${editedProductVariant.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

@@ -24,7 +24,7 @@ export async function POST(req: any) {
     if (!db) {
       throw new Error("Failed to connect to database");
     }
-    const collection = db.collection<ProductCategoryType>("products");
+    const collection = db.collection<ProductCategoryType>("productCategories");
     const category = await collection.insertOne(body);
     return new Response(JSON.stringify(category), { status: 201 });
   } catch (error) {
@@ -41,7 +41,7 @@ export async function DELETE(req: any) {
     if (!db) {
       throw new Error("Failed to connect to database");
     }
-    const collection = db.collection("products");
+    const collection = db.collection("productCategories");
     const category = await collection.deleteOne({id:id});
     return new Response(JSON.stringify(category), { status: 201 });
   } catch (error) {

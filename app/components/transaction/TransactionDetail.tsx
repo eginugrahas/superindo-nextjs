@@ -23,13 +23,13 @@ function TransactionDetail({ trxId }: { trxId: number | undefined }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3001/transactionDetails?transaction_id=" + trxId
+          "/api/transactionDetails?id=" + trxId
         );
         const data = await response.json();
         setTransactionDetail(data);
 
         const product = await fetch(
-          "http://localhost:3001/productVariants?id=" +
+          "/api/variants/getOneById?id=" +
             data[0].product_variant_id
         );
         const productData = await product.json();

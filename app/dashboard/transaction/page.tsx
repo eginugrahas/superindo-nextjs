@@ -10,7 +10,7 @@ function Transaction() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/transactions");
+        const response = await fetch("/api/transactions");
         const data = await response.json();
         setTransactions(data);
       } catch (error) {

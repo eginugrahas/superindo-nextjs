@@ -86,7 +86,7 @@ function Product(props: ProductPropsType) {
     async function fetchData() {
       try {
         const response = await fetch(
-          `http://localhost:3001/productVariants?product_id=${props.product.id}`
+          `/api/variants/getByProductId?id=${props.product.id}`
         );
         const data = await response.json();
         setProductVariants(data);

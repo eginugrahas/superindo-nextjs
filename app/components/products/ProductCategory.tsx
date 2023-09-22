@@ -32,7 +32,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
     try {
       if (editedProductCategory) {
         await fetch(
-          `http://localhost:3001/productCategory/${editedProductCategory.id}`,
+          `/api/categories?id=${editedProductCategory.id}`,
           {
             method: "DELETE",
             headers: {
@@ -53,7 +53,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
     try {
       if (editedProductCategory) {
         await fetch(
-          `http://localhost:3001/productCategories/${editedProductCategory.id}`,
+          `/api/categories?id=${editedProductCategory.id}`,
           {
             method: "PUT",
             headers: {
@@ -82,7 +82,7 @@ function ProductCategory(props: ProductCategoryPropsType) {
     async function fetchData() {
       try {
         const response = await fetch(
-          `http://localhost:3001/products?product_category_id=${props.category.id}`
+          `/api/products/getByCategory?id=${props.category.id}`
         );
         const data = await response.json();
         setProductInCategory(data);

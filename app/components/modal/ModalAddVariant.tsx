@@ -43,7 +43,7 @@ function ModalAddVariant({
 
   async function fetchExistingProductCodes() {
     try {
-      const response = await fetch("http://localhost:3001/productVariants");
+      const response = await fetch("/api/variants");
       const data = await response.json();
       const existingProductCodes = data.map(
         (product: ProductVariantType) => product.code
@@ -92,7 +92,7 @@ function ModalAddVariant({
         }
       });
       //   console.log(addProductVariant);
-      const response = await fetch("http://localhost:3001/productVariants", {
+      const response = await fetch("/api/variants", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
