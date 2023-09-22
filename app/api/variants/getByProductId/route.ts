@@ -10,9 +10,9 @@ export async function GET(req: any) {
     }
     const collection = db.collection("productVariants");
 
-    const product = await collection.findOne({
+    const product = await collection.find({
       product_id: Number(id),
-    });
+    }).toArray();
     if (!product) {
       return new Response(JSON.stringify({ message: "Product not found" }));
     } else {
@@ -71,7 +71,7 @@ export async function PUT(req: any) {
     return new Response(JSON.stringify({ message: "Internal server error" }));
   }
 }
-
+ 
 export async function DELETE(req: any) {
   try {
     const { searchParams } = new URL(req.url);

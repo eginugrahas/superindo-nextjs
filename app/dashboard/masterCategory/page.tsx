@@ -20,6 +20,7 @@ const MasterCategory: React.FC = () => {
       try {
         const response = await fetch("/api/categories");
         const data = await response.json();
+        console.log(data)
         setCategories(data);
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -9,9 +9,9 @@ export async function GET(req:any) {
         throw new Error("Failed to connect to database");
       }
       const collection = db.collection("products");
-      const product = await collection.findOne({
+      const product = await collection.find({
         product_category_id: Number(id),
-      });
+      }).toArray();
       return new Response(JSON.stringify(product), { status: 200 });
     } catch (error) {
       console.error("Error fetching products:", error);
