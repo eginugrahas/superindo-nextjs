@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import connect from "@/mongo";
 
 export async function GET(req:any) {

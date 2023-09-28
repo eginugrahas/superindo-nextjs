@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, MenuItem, Modal, Select } from "@mui/material";
 import { ProductCategoryType, ProductType } from "@/app/types/types";
-import ModalConfirm from "./ModalConfirm";
 
 const style = {
   position: "absolute" as "absolute",

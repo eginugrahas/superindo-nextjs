@@ -1,5 +1,5 @@
 import { ProductVariantType } from "@/app/types/types";
-import { Modal, Box, Select, MenuItem } from "@mui/material";
+import { Modal, Box } from "@mui/material";
 import React, { useState } from "react";
 
 const style = {

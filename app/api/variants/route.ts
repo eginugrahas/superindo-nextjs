@@ -1,6 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import connect from "@/mongo";
-import { ObjectId } from "mongodb";
 import { ProductVariantType } from "@/app/types/types";
 
 export async function GET(req:any) {

@@ -1,6 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
-// import users from '../../jsons/user.json'
-import { getAllUsers, getUserById } from "../users/route";
+import { getAllUsers} from "../users/route";
 
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');

@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import connect from "@/mongo";
 import { ProductCategoryType } from "@/app/types/types";
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { Button, Menu, MenuItem, Switch } from "@mui/material";
 import Accordion from "../Accordion";
 import ProductVariant from "./ProductVariant";

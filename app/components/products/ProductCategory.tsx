@@ -31,16 +31,13 @@ function ProductCategory(props: ProductCategoryPropsType) {
   const handleDelete = async () => {
     try {
       if (editedProductCategory) {
-        await fetch(
-          `/api/categories?id=${editedProductCategory.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(editedProductCategory),
-          }
-        );
+        await fetch(`/api/categories?id=${editedProductCategory.id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editedProductCategory),
+        });
 
         setIsEditing(false);
       }
@@ -52,16 +49,13 @@ function ProductCategory(props: ProductCategoryPropsType) {
   const handleSave = async () => {
     try {
       if (editedProductCategory) {
-        await fetch(
-          `/api/categories?id=${editedProductCategory.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(editedProductCategory),
-          }
-        );
+        await fetch(`/api/categories?id=${editedProductCategory.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editedProductCategory),
+        });
         setIsEditing(false);
       }
     } catch (error) {
@@ -106,7 +100,9 @@ function ProductCategory(props: ProductCategoryPropsType) {
         </div>
         <div className="">
           <div className="font-semibold text-xs">Jumlah Produk</div>
-          <div className="text-lg font-bold text-center">{productInCategory.length}</div>
+          <div className="text-lg font-bold text-center">
+            {productInCategory.length}
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex gap-3 items-center justify-center">
@@ -165,11 +161,13 @@ function ProductCategory(props: ProductCategoryPropsType) {
       </div>
       <div className="">
         <Accordion cta="Tambah Produk ke Kategori" title="Lihat Produk">
-          {productInCategory.map((product) => (
-            <div className="my-2 ml-3" key={product.id}>
-              <ProductItem key={product.id} product={product} />
-            </div>
-          ))}
+          {productInCategory
+            ? productInCategory.map((product) => (
+                <div className="my-2 ml-3" key={product.id}>
+                  <ProductItem key={product.id} product={product} />
+                </div>
+              ))
+            : "Belum ada produk di kategori ini"}
         </Accordion>
       </div>
     </div>

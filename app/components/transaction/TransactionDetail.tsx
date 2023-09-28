@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import {
-  TransactionDetailPropsType,
-  TransactionDetailType,
-} from "@/app/types/types";
 
 function TransactionDetail({ trxId }: { trxId: number | undefined }) {
   const [transactionDetail, setTransactionDetail] = useState
